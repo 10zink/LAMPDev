@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <!-- Bootstrap Styles -->
+    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div class="container-fluid">
+        <div class="jumbotron">
+			<h1 class="text-center">Plan Your Trip!</h1>
+		</div>            
+        <form method="POST" action="exam2.php?cmd=howMuchGas">
+			<div class="form-group">
+			    <label for="mpg">Miles per gallon for your car:</label>
+                <input id="mpg" type="text" name="mpg" class="form-control"/>
+            </div>
+			<div class="form-group">
+			    <label for="tankSize">The size of your tank in gallons:</label>
+                <input id="tankSize" type="text" name="tankSize" class="form-control"/>
+            </div>
+			<div class="form-group">
+			    <label for="cost">The cost of a gallon of gas:</label>
+                <input id="cost" type="text" name="cost" class="form-control"/>
+            </div>
+            <div class="form-group">
+			    <label for="distance">The distance in miles of your trip:</label>
+                <input id="distance" type="text" name="distance" class="form-control"/>
+            </div>
+            <p><input type="submit" class="btn btn-primary" value="OK"></p>
+        </form>
+        </div>
+        
+        <!-- Bootstrap JS -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>	
+        
+    </body>
+    
+</html>
