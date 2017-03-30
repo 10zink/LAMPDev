@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Quotes</title>
+
+    <!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+    <style>
+
+	  </style>
+
+	</head>
+	<body>
+		<!-- page content -->
+		<div class="container">
+			<h2>Guessing Game</h2>
+			<form id="quoteForm">
+				<button id="btn" type="button" class="btn btn-default">Find Teacher</button>
+			</form>
+
+			<p id="response"></p>
+			
+		</div>
+
+		<!-- jquery and bootstrap -->
+		<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+		<!-- custom local javascript -->
+		<script>
+		    // model
+        	var model = undefined;
+			
+			// view 
+			function updateView()
+			{
+			    if (model == undefined)
+			    {
+			        $("#response").text("Click the button to get a quote.");
+			    }
+				else
+				{
+				    $("#response").text(model.Quote);
+				}
+			}
+
+			// controller
+			$(document).ready(function ()
+			{
+			    updateView();
+			});
+
+			$("#btn").click(function ()
+			{
+		    	var url = "Quotes.php?cmd=getQuote";
+                var request = $.post(url, "");
+                request.done(function(json)
+                {
+                	console.log(json);
+                    model = json;
+                    updateView();
+                });
+                request.fail(function(jqXHR, textStatus, errorThrown)
+                {
+                    $("#response").text(textStatus);
+                    console.log("fail object ", jqXHR);
+                    console.log("error thrown ", errorThrown);
+                    updateView();
+                });
+            });
+
+		</script>
+	</body>
+</html>

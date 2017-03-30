@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Report</title>
+
+    <!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+    <style>
+
+	  </style>
+
+	</head>
+	<body>
+		<!-- page content -->
+		<div class="container">
+			<h2>Wonderful Weather World!</h2>
+			<form id="guessForm">
+				<div class="form-group">
+					<label for="zip">Zip Code or 'City,State'</label>
+					<input type="text" class="form-control"
+						id="zip" name="zip" placeholder="Enter location">
+				</div>
+				<button id="btn" type="button" class="btn btn-default">Enter</button>
+			</form>
+
+		
+			<div align ="left">
+				<p></p>
+				<p id="response"></p>
+			</div>
+			
+			
+		</div>
+
+		<!-- jquery and bootstrap -->
+		<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+		<!-- custom local javascript -->
+		<script>
+		    // model
+        	var model = undefined;
+       
+			// view 
+			function updateView()
+			{
+			    if (model == undefined)
+			    {
+			    }
+			    //If user types unaccepted variable, the following produces error.
+			    else if(model.error != null)
+			    {
+			    	$("#response").html("<div class='jumbotron'><div align='center'><font color='#ff0000'><h2>No matching location found!</font></div></div>");
+			    }
+			    //I created the whole response into a html response. 
+				else
+			    {
+			    	$("#response").html(
+			    		"<div class='jumbotron'><div align='right'>"+ model.location.localtime +"</div><h2>Weather for " + model.location.name + ", " + model.location.region + "</h2>" +
+			    		"<p>" + model.current.condition.text + ", " + model.current.temp_f + " °F</p>" +
+			    		"<p><img src=" + model.current.condition.icon + " /></p>" +
+			    		"<p>Feels like: "+ model.current.feelslike_f + " °F</p>" +
+			    		"<p>Wind speed: " + model.current.wind_mph + " mph</p></div>"
+			    		);
+			    	
+			    }
+		
+			}
+
+			// controller
+			$(document).ready(function ()
+			{
+			    updateView();
+			});
+
+			$("#btn").click(function ()
+			{
+		    	var z = $("#zip").val();
+				var url = "https://api.apixu.com/v1/current.json?key=7d58e084d8de4f73916223427172903&q="+z; //link used to access API
+				var request = $.getJSON(url);
+				
+			request.done(function(json)
+			{
+				console.log(json);
+				model = json;
+				updateView();
+			});
+
+		  	request.fail(function()
+			{
+				model.error = "Error contacting server!";
+				updateView();
+		  	});
+		  	
+			});
+			
+
+		</script>
+	</body>
+</html>
