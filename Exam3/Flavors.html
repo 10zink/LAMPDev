@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Report</title>
+
+    <!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	
+	<style>
+	    
+	</style>
+	
+	</head>
+	<body>
+	    <!-- page content -->
+	    <div class="container">
+	        <h1>Ice Cream Sundae</h1>
+	        <form id="numForm">
+	            <div class=form-group>
+	                <label for="flavor">Flavor</label>
+	                <input type="text" class="form-control"
+	                    id="flavor" name="flavor" placeholder="Enter a flavor">
+	            </div>
+	        <button id="btnAdd" type="button" class="btn btn-default">+Flavor</button>
+	        <button id="btnSub" type="button" class="btn btn-default">-Flavor</button>
+	        </form>
+	        
+	        <p id="response"></p>
+	   
+	    </div>
+	    
+	   <!-- jquery and bootstrap -->
+	   <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+	   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	   
+	   
+	   <!-- custom local javascript -->
+	   <script>
+	       // model
+	       var model = {'total' : " "};
+	      
+	       
+	       // view
+	       function updateView()
+	       {
+	       		for (var i = 0; i < aryStrings_g.length; i++)				
+				{
+	        		$("#response").append("<ul><li>" + model.total[i] +"</li></ul>");
+				}
+	       }	
+	       
+	       // controller
+	       $("#btnAdd").click(function()
+	       {   
+	           var url = "Flavors.php?cmd=add";
+	           var data = $("#numForm").serialize();
+	           var request = $.post(url, data);
+	           
+	           request.done(function(json)
+	           {
+	               model = json;
+	               updateView();
+	           });
+	           
+	           request.fail(function(jqXHR, textStatus, errorThrown)
+	           {
+	               $("#response").text(textStatus);
+	               console.log("fail object ", jqXHR);
+	               console.log("error thrown", errorThrown);
+	           });
+	       });
+	       
+	        $("#btnSub").click(function()
+	       {   
+	           var url = "Flavors.php?cmd=sub";
+	           var data = $("#numForm").serialize();
+	           var request = $.post(url, data);
+	           
+	           request.done(function(json)
+	           {
+	               model = json;
+	               updateView();
+	           });
+	           
+	           request.fail(function(jqXHR, textStatus, errorThrown)
+	           {
+	               $("#response").text(textStatus);
+	               console.log("fail object ", jqXHR);
+	               console.log("error thrown", errorThrown);
+	           });
+	       });
+	  
+	   </script>
+	</body>
+</html>

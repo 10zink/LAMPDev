@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Report</title>
+
+    <!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	
+	<style>
+	    
+	</style>
+	
+	</head>
+	<body>
+	    <!-- page content -->
+	    <div class="container">
+	        <h2>Calculator</h2>
+	        <form id="numForm">
+	            <div class=form-group>
+	                <label for="num">Number</label>
+	                <input type="text" class="form-control"
+	                    id="num" name="num" placeholder="Enter a number">
+	            </div>
+	        <button id="btnAdd" type="button" class="btn btn-default">+</button>
+	        <button id="btnSub" type="button" class="btn btn-default">-</button>
+	        </form>
+	        
+	        <p id="response"></p>
+	   
+	    </div>
+	    
+	   <!-- jquery and bootstrap -->
+	   <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+	   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	   
+	   
+	   <!-- custom local javascript -->
+	   <script>
+	       // model
+	       var model = {'total' : 0};
+	       
+	       // view
+	       function updateView()
+	       {
+	           $("#response").text(model.total);
+	       }
+	       
+	       // controller
+	       $("#btnAdd").click(function()
+	       {   
+	           var url = "Calculator.php?cmd=add";
+	           var data = $("#numForm").serialize();
+	           var request = $.post(url, data);
+	           
+	           request.done(function(json)
+	           {
+	               model = json;
+	               updateView();
+	           });
+	           
+	           request.fail(function(jqXHR, textStatus, errorThrown)
+	           {
+	               $("#response").text(textStatus);
+	               console.log("fail object ", jqXHR);
+	               console.log("error thrown", errorThrown);
+	           });
+	       });
+	       
+	        $("#btnSub").click(function()
+	       {   
+	           var url = "Calculator.php?cmd=sub";
+	           var data = $("#numForm").serialize();
+	           var request = $.post(url, data);
+	           
+	           request.done(function(json)
+	           {
+	               model = json;
+	               updateView();
+	           });
+	           
+	           request.fail(function(jqXHR, textStatus, errorThrown)
+	           {
+	               $("#response").text(textStatus);
+	               console.log("fail object ", jqXHR);
+	               console.log("error thrown", errorThrown);
+	           });
+	       });
+	  
+	   </script>
+	</body>
+</html>
