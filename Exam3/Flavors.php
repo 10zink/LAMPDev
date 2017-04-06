@@ -24,21 +24,31 @@ else //if all supported commands
 
 function add()
 {
-    $total = getSessionValue("total", 0);
-    $flavor = getValue("flavor", array());
-    $total = $total + $flavor;
+    $total = getSessionValue("total", array());
+    $flavor = getValue("flavor", " ");
+    $total[] = $flavor;
     setSessionValue("total", $total);
     
-    return array("total" =>$test);
+    return array("total" =>$total);
 }
 
 function subtract()
 {
-    #$total[] = getSessionValue("total", 0);
-    $flavor = getValue("flavor", array());
-    #setSessionValue("total", $total);
+    $total = getSessionValue("total", array());
+    $flavor = getValue("flavor", " ");
+    $newTotal = [];
     
-    return array("total" =>$flavor);
+    foreach ($total as $n)
+    {
+        if($n != $flavor)
+        {
+            $newTotal[] = $n;
+        }
+    }
+
+    setSessionValue("total", $newTotal);
+    
+    return array("total" =>$newTotal);
 }
 
 ?>

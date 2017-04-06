@@ -30,7 +30,7 @@
 	        </form>
 	        
 	        <p id="response"></p>
-	   
+	        
 	    </div>
 	    
 	   <!-- jquery and bootstrap -->
@@ -41,16 +41,13 @@
 	   <!-- custom local javascript -->
 	   <script>
 	       // model
-	       var model = {'total' : " "};
+	       var model = undefined;
 	      
 	       
 	       // view
 	       function updateView()
 	       {
-	       		for (var i = 0; i < aryStrings_g.length; i++)				
-				{
-	        		$("#response").append("<ul><li>" + model.total[i] +"</li></ul>");
-				}
+	       	$("#response").html("<ul><li>" + model.total +"</li></ul>");
 	       }	
 	       
 	       // controller
