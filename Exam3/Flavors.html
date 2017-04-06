@@ -47,7 +47,15 @@
 	       // view
 	       function updateView()
 	       {
-	       	$("#response").html("<ul><li>" + model.total +"</li></ul>");
+	       	
+	       	var string = [model.total];
+	       	
+	       	for (var i = 0; i < string.length; i++)				
+				{
+					$("#response").html("<ul><li>" + string[i] +"</li></ul>");
+				}
+	       	
+	       	
 	       }	
 	       
 	       // controller
