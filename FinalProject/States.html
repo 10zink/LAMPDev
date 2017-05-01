@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>StateList</title>
+
+    <!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+    <style>
+		.msgBox 
+		{
+			font-weight: bold;		
+		}
+		
+		form
+		{
+			padding: 5px;
+			border: 1px solid black;
+			box-shadow: 10px 10px 5px #888888;
+		}
+	</style>
+
+	</head>
+	<body>
+		<!-- page content -->
+		<div class="container">
+			<h2>List States Abbreviations</h2>
+			
+			<table id="stateTable" class="table table-striped">
+				<thead>
+					<tr>
+						<th>StatesID</th>
+						<th>StateAbbreviations</th>
+						<th>StateName</th>
+						<th>Population</th>
+						<th>Delete</th>
+					</tr>
+				</thead>
+				<tbody id="stateTableBody">
+				</tbody>
+			</table>
+			
+			<p id="message" class="msgBox"></p>
+			<button id= "newBtn" type="button" class= "btn btn-default"> New</button>
+			
+			<div>
+			<form id="stateForm" >
+				<div class="form-group">
+					<label for="stateAbbreviations">State Abbreviations</label>
+					<input type="text" class="form-control"
+						id="stateAbbreviations" name="stateAbbreviations" placeholder="stateAbbreviations">
+				</div>
+				<div class="form-group">
+					<label for="stateName">State Name</label>
+					<input type="text" class="form-control"
+						id="stateName" name="stateName" placeholder="stateName">
+				</div>
+				<div class="form-group">
+					<label for="statePopulation">Population</label>
+					<input type="number" class="form-control"
+						id="statePopulation" name="statePopulation" placeholder="statePopulation">
+				</div>
+				
+			
+				<button id="addBtn" type="button" class="btn btn-default">Submit</button>
+				
+			</form>
+			</div>
+			
+		</div>
+
+		<!-- jquery and bootstrap -->
+		<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+		<!-- custom local javascript -->
+		<script>
+		    // model
+        	var model = [];
+			
+			// view 
+			function updateView()
+			{
+				if (model.error != undefined)
+				{
+					$("#message").html("<font color='red'><p>"+model.error+"</p></font>");
+					
+				}
+				else
+				{
+					$("#stateTableBody").empty();
+					for (var i in model)
+					{
+						var row = model[i];
+						$("#stateTableBody").append("<tr>"+
+							"<td>"+row.StateID+"</td>"+
+							"<td>"+row.StateAbbreviations+"</td>"+
+							"<td>"+row.StateName+"</td>"+
+							"<td>"+row.StatePopulation+"</td>"+
+							"<td><a stateID='"+row.StateID +"' href='#' class='delBtn glyphicon glyphicon-remove'></a></td>"+
+							"</tr>");
+					}
+					$("#message").text("You have "+model.length+" state(s) entered.");
+				}
+			}
+
+			// controller
+			$(document).ready(function ()
+			{
+				$( "form" ).hide();
+				sendCommand("getStates");
+				
+			});
+			
+			$("#newBtn").click(function()
+			{
+				$( "form" ).toggle( "slow" );
+			});
+
+			$("#addBtn").click(function ()
+			{
+				$("form").toggle("slow");
+				sendCommand("addStates");
+            });
+            
+			$(document).on("click", ".delBtn", function()
+			{
+				var id = $(this).attr("stateID");
+
+		    	var url = "States.php?cmd=deleteState&stateID="+id;
+	            var data = $("#stateForm" ).serialize();
+                var request = $.post(url, data);
+                request.done(function(json)
+                {
+                	console.log(json);
+                    model = json;
+                    updateView();
+                });
+                request.fail(function(jqXHR, textStatus, errorThrown)
+                {
+                    $("#message").text(textStatus);
+                    console.log("fail object ", jqXHR);
+                    console.log("error thrown ", errorThrown);
+                    updateView();
+                });
+            });            
+            
+            function sendCommand(cmd)
+            {
+		    	var url = "States.php?cmd="+cmd;
+	            var data = $("#stateForm" ).serialize();
+                var request = $.post(url, data);
+                request.done(function(json)
+                {
+                	console.log(json);
+                    model = json;
+                    updateView();
+                });
+                request.fail(function(jqXHR, textStatus, errorThrown)
+                {
+                    $("#message").text(textStatus);
+                    console.log("fail object ", jqXHR);
+                    console.log("error thrown ", errorThrown);
+                    updateView();
+                });
+            }
+            
+
+		</script>
+	</body>
+</html>
